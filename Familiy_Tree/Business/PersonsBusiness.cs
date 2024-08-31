@@ -446,6 +446,8 @@ namespace Familiy_Tree.Business
             // Obtén la persona con las relaciones necesarias
             var person = uow.PersonsRepository.Get(p => p.Id == personId)
                 .Include(p => p.Partner)
+                .Include(p => p.ChildRelationships).ThenInclude(r => r.Mother)
+                .Include(p => p.ChildRelationships).ThenInclude(r => r.Father)
                 .Include(p => p.FatherRelationships).ThenInclude(r => r.Child)
                 .Include(p => p.MotherRelationships).ThenInclude(r => r.Child)
                 .FirstOrDefault();
