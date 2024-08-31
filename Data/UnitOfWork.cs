@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Data.Repositories.Core;
-using Entity.Entities;
-using Microsoft.EntityFrameworkCore;
+using Entities.Entities;
 using Microsoft.EntityFrameworkCore.Storage;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+
 
 
 namespace Data
@@ -17,7 +16,8 @@ namespace Data
         public Context dbcontext;
         private IDbContextTransaction? _currentTransaction;
 
-        private GenericRepository<Client>? clientRepository;
+        private GenericRepository<Persons>? personsRepository;
+        private GenericRepository<Relationships>? relationshipsRepository;
 
 
         public UnitOfWork(Context context)
@@ -96,17 +96,30 @@ namespace Data
             }
         }
 
-        public GenericRepository<Client> ClientRepository
+        public GenericRepository<Persons> PersonsRepository
         {
             get
             {
-                if (clientRepository == null)
+                if (personsRepository == null)
                 {
-                    clientRepository = new GenericRepository<Client>(dbcontext);
+                    personsRepository = new GenericRepository<Persons>(dbcontext);
                 }
-                return clientRepository;
+                return personsRepository;
             }
         }
+
+        public GenericRepository<Relationships> RelationshipsRepository
+        {
+            get
+            {
+                if (relationshipsRepository == null)
+                {
+                    relationshipsRepository = new GenericRepository<Relationships>(dbcontext);
+                }
+                return relationshipsRepository;
+            }
+        }
+
 
 
     }

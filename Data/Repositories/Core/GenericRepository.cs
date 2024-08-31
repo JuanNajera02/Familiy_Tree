@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Entities.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
@@ -86,6 +87,18 @@ namespace Data.Repositories.Core
         {
             return await context.Database.BeginTransactionAsync();
         }
+        public async Task<List<Relationships>> GetAllAsync()
+        {
+            return await context.Relationships.ToListAsync();
+        }
+
+        public async Task SaveAsync()
+        {
+            await context.SaveChangesAsync();
+        }
+
+
+
 
     }
 }

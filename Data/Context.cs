@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using Data.Maps;
 using Entities.Entities;
 
 
@@ -19,9 +17,13 @@ namespace Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("dbo");
+            new PersonsMap().Configure(modelBuilder.Entity<Persons>());
+            new RelationshipsMap().Configure(modelBuilder.Entity<Relationships>());
 
         }
- 
+        public virtual DbSet<Persons> Persons { get; set; }
+        public virtual DbSet<Relationships> Relationships { get; set; }
+
 
     }
 }
