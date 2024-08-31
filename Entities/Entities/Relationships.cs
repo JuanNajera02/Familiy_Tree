@@ -16,5 +16,7 @@ namespace Entities.Entities
         public virtual Persons Father { get; set; }
         public virtual Persons Mother { get; set; }
         public virtual Persons Child { get; set; }
+
+
     }
 }

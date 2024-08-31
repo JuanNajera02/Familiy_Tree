@@ -76,6 +76,17 @@ namespace Familiy_Tree.Controllers
             return Ok(response);
         }
 
+        [HttpGet("GetFamilyTree/{personId}")]
+        public ActionResult<Persons> GetFamilyTree(int personId)
+        {
+
+            //declara un hashSET HashSet<int> seen
+            var seen = new HashSet<int>();
+
+            var familyTree = _personsBusiness.GetFamilyTree(personId, seen);
+                return Ok(familyTree);
+        }
+
 
 
 

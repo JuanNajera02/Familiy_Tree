@@ -429,6 +429,51 @@ namespace Familiy_Tree.Business
         }
 
 
+        public Persons GetFamilyTree(int personId, HashSet<int> seen)
+        {
+
+            // Verifica si la persona ya ha sido vista para evitar ciclos
+            if (seen.Contains(personId))
+            {
+                //retorna una persona
+                return new Persons { Id = personId, PersonName = "Ciclo detectado" };
+
+            }
+
+            // Marca a esta persona como vista
+            seen.Add(personId);
+
+            // Obtén la persona con las relaciones necesarias
+            var person = uow.PersonsRepository.Get(p => p.Id == personId)
+                .Include(p => p.Partner)
+                .Include(p => p.FatherRelationships).ThenInclude(r => r.Child)
+                .Include(p => p.MotherRelationships).ThenInclude(r => r.Child)
+                .FirstOrDefault();
+
+        //    person.name = person.PersonName;
+
+            // Inicializa listas para hijos, padres y pareja
+            var childRelationships = person.FatherRelationships
+                .Select(r => r.ChildId)
+                .Union(person.MotherRelationships.Select(r => r.ChildId))
+                .Distinct()
+                .Select(childId => new Relationships
+                {
+                    ChildId = childId,
+                    Child = GetFamilyTree(childId, seen)
+                })
+                .ToList();
+
+            person.FatherRelationships = childRelationships;
+
+
+            // Configura los valores de pareja
+        //    person.Partner = GetFamilyTree(person.PartnerId.Value, seen);
+
+            return person;
+        }
+
+
 
 
     }
